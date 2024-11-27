@@ -2,76 +2,64 @@ var express = require("express");
 var router = express.Router();
 const { con } = require("../con");
 
-router.get("/", function (req, res, next) {
-    const username = req.query.username;
+// POST request to check if username exists
+router.post("/register", function (req, res, next) {
+    const username = req.body.username; // Get username from the request body
+
     let sql = `SELECT * FROM user WHERE username = "${username}"`;
+
     con.query(sql, function (err, results) {
-        console.log("results: ", results.length);
         if (err) {
-            res.status(500).send("server error");
+            return res.status(500).send("Server error");
         }
-        if (results.length) {
-            res.json({ body: { userExist: "false" } });
+
+        if (results.length > 0) {
+            // If username exists
+            return res.json({ body: { userExist: "true" } });
         } else {
-            res.json({ body: { userExist: "true" } }); // Send back a response with userExist
+            // If username does not exist
+            return res.json({ body: { userExist: "false" } });
         }
     });
 });
 
-router.post("/", function (req, res, next) {
-    let name = req.body.name;
-    let email = req.body.email;
-    let password = req.body.password;
+// POST request to create a new user
+router.post("/user", function (req, res, next) {
+    let { username, email, password } = req.body;
 
-    try {
-        if (typeof password === "number") {
-            password = password.toString();
-        } else {
-            console.log("password is string");
-            throw new Error("change the password");
-        }
-
-        if (password.length < 5 || !email) {
-            console.log("Validation failed");
-            throw new Error("There is an error in your details: Invalid password, email, or username.");
-        }
-
-        let sqlCheck = `SELECT * FROM user WHERE username = "${name}"`;
-        con.query(sqlCheck, function (err, results) {
-            if (err) {
-                console.error("Error checking username:", err.message);
-                throw err;
-            }
-
-            if (results.length > 0) {
-                console.log("Username already exists");
-                return res.status(400).send("Username already exists. Please choose a different username.");
-            } else {
-                let sqlInsertUser = `INSERT INTO user (username, email) VALUES ("${name}", "${email}")`;
-                con.query(sqlInsertUser, [name, email], function (err, result) {
-                    if (err) {
-                        console.error("Error executing query for user:", err.message);
-                        throw err;
-                    }
-                    console.log("Added new user to user table");
-
-                    let sqlInsertIdent = `INSERT INTO ident (username, password) VALUES ('${name}', '${password}')`;
-                    con.query(sqlInsertIdent, [name, password], function (err, result) {
-                        if (err) {
-                            console.error("Error executing query for ident:", err.message);
-                            throw err;
-                        }
-                        console.log("Added new user to ident table");
-
-                        res.send("Details are valid. User has been created.");
-                    });
-                });
-            }
-        });
-    } catch (err) {
-        console.error("Error:", err.message);
-        res.status(400).send(err.message);
+    if (password.length < 5 || !email || !username) {
+        return res.status(400).send("Invalid details.");
     }
+
+    let sqlCheck = `SELECT * FROM user WHERE username = "${username}"`;
+    con.query(sqlCheck, function (err, results) {
+        if (err) {
+            console.error("Error checking username:", err.message);
+            return res.status(500).send("Server error.");
+        }
+
+        if (results.length > 0) {
+            return res.status(400).send("Username already exists.");
+        } else {
+            // Insert new user into the database
+            let sqlInsertUser = `INSERT INTO user (username, email) VALUES ("${username}", "${email}")`;
+            con.query(sqlInsertUser, function (err, result) {
+                if (err) {
+                    return res.status(500).send("Error creating user.");
+                }
+
+                // Insert password into 'ident' table
+                let sqlInsertIdent = `INSERT INTO ident (username, password) VALUES ('${username}', '${password}')`;
+                con.query(sqlInsertIdent, function (err, result) {
+                    if (err) {
+                        return res.status(500).send("Error saving password.");
+                    }
+
+                    return res.send("User created successfully.");
+                });
+            });
+        }
+    });
 });
 
 module.exports = router;

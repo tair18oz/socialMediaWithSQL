@@ -8,12 +8,14 @@ export default function Register({ setConnectedUserName }) {
     const [verifyPassword, setVerifyPassword] = useState("");
     const [error, setError] = useState("");
 
+    // Function to add the user after successful registration
     const addUser = () => {
-        const API_URL_USERS = "http://localhost:3000/user";
+        const API_URL_USERS = "http://localhost:3000/user"; // Ensure this is the correct URL for user creation
+
         fetch(API_URL_USERS, {
             method: "POST",
             headers: {
-                "Content-type": "application/json",
+                "Content-Type": "application/json",
             },
             body: JSON.stringify({
                 username: userName,
@@ -21,11 +23,9 @@ export default function Register({ setConnectedUserName }) {
                 password: password,
             }),
         })
-            .then((response) => {
-                if (!response.ok) throw new Error("Failed to create user");
-                return response.json();
-            })
+            .then((response) => response.json())
             .then((data) => {
+                console.log("User created:", data);
                 localStorage.setItem("currentUser", JSON.stringify({ userName, password, email }));
                 setConnectedUserName(userName);
             })
@@ -34,6 +34,7 @@ export default function Register({ setConnectedUserName }) {
             });
     };
 
+    // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -41,17 +42,15 @@ export default function Register({ setConnectedUserName }) {
             setError("Passwords do not match!");
             return;
         }
+
+        // Check if the username is available
         fetch(`http://localhost:3000/register?username=${userName}`)
-            .then(() => {
-                console.log("hi");
-            })
-            .then((response) => response.json())
+            .then((response) => response.json()) // Parse the JSON response
             .then((data) => {
-                console.log("data: ", data);
                 if (data.body.userExist === "true") {
                     setError("Username already exists. Please choose a different username.");
                 } else {
-                    addUser();
+                    addUser(); // Call addUser function if username is available
                 }
             })
             .catch((error) => {
@@ -80,6 +79,7 @@ export default function Register({ setConnectedUserName }) {
                     <input type="password" value={verifyPassword} onChange={(e) => setVerifyPassword(e.target.value)} required />
                 </div>
                 <button type="submit">Register</button>
+                {error && <div style={{ color: "red" }}>{error}</div>}
                 <NavLink to="/login">Login</NavLink>
             </form>
         </div>

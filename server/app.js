@@ -4,6 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
+var bodyParser = require("body-parser");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(bodyParser.json());
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
@@ -56,3 +58,7 @@ con.connect(function (err) {
 });
 
 module.exports = app;
+
+app.listen(3000, () => {
+    console.log("Server is running on port 3000");
+});
