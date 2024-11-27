@@ -7,10 +7,7 @@ var logger = require("morgan");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var registerRouter = require("./routes/register");
-<<<<<<< HEAD
-=======
 var loginRouter = require("./routes/login");
->>>>>>> 8c4174968b38c9ae9fe28b9e7bb7b23d4341ea71
 
 var app = express();
 var fsPromise = require("fs/promises");
@@ -28,37 +25,34 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/register", registerRouter);
-<<<<<<< HEAD
-=======
 app.use("/login", loginRouter);
->>>>>>> 8c4174968b38c9ae9fe28b9e7bb7b23d4341ea71
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    next(createError(404));
+  next(createError(404));
 });
 
 app.use(function (err, req, res, next) {
-    res.locals.message = err.message;
-    res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.locals.message = err.message;
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
-    // render the error page
-    res.status(err.status || 500);
-    res.render("error");
+  // render the error page
+  res.status(err.status || 500);
+  res.render("error");
 });
 
 var mysql = require("mysql");
 
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "z10mz10m",
-    database: "project7",
+  host: "localhost",
+  user: "root",
+  password: "z10mz10m",
+  database: "project7",
 });
 
 con.connect(function (err) {
-    if (err) throw err;
-    console.log("Connected!");
+  if (err) throw err;
+  console.log("Connected!");
 });
 
 module.exports = app;
