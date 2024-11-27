@@ -4,7 +4,18 @@ const { con } = require("../con");
 
 router.get("/", function (req, res, next) {
     const username = req.query.username;
-    res.send(`Username is: ${username}`);
+    let sql = `SELECT * FROM user WHERE username = "${username}"`;
+    con.query(sql, function (err, results) {
+        console.log("results: ", results.length);
+        if (err) {
+            res.status(500).send("server error");
+        }
+        if (results.length) {
+            res.json({ body: { userExist: "false" } });
+        } else {
+            res.json({ body: { userExist: "true" } }); // Send back a response with userExist
+        }
+    });
 });
 
 router.post("/", function (req, res, next) {

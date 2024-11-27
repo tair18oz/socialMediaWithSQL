@@ -42,9 +42,13 @@ export default function Register({ setConnectedUserName }) {
             return;
         }
         fetch(`http://localhost:3000/register?username=${userName}`)
+            .then(() => {
+                console.log("hi");
+            })
             .then((response) => response.json())
             .then((data) => {
-                if (data.length !== 0) {
+                console.log("data: ", data);
+                if (data.body.userExist === "true") {
                     setError("Username already exists. Please choose a different username.");
                 } else {
                     addUser();
