@@ -8,6 +8,7 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 
 var app = express();
+var fsPromise = require("fs/promises");
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -44,16 +45,41 @@ var con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "z10mz10m",
-  //database: "project7",
+  database: "project7",
 });
 
 con.connect(function (err) {
   if (err) throw err;
   console.log("Connected!");
-  con.query("CREATE DATABASE project7", function (err, result) {
-    if (err) throw err;
-    console.log("Database created");
-  });
 });
+
+let tableFiles = ["comment", "ident", "post", "todo", "user"];
+
+async function createTables(fileArr) {
+  for (let i = 0; i < fileArr.length; i++) {
+    let route = `./entities/${fileArr[i]}.json`;
+    try {
+      const res = await fsPromise.readFile(route, "utf8");
+      let tableRows = JSON.parse(res);
+      let s = "";
+      for (let key in tableRows) {
+        s += `${key} ${tableRows[key]},`;
+      }
+      s = s.slice(0, -1);
+
+      let sql = `CREATE TABLE ${fileArr[i]} (${s})`;
+      console.log("sql: ", sql);
+
+      con.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log("Table created");
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+createTables(tableFiles);
 
 module.exports = app;
