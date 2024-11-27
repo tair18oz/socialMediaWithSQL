@@ -5,4 +5,3 @@
     "completed": "BOOLEAN DEFAULT FALSE",
     "foreign_key": "FOREIGN KEY (user_id) REFERENCES users(id)"
 }
-
