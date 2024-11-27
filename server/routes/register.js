@@ -2,6 +2,11 @@ var express = require("express");
 var router = express.Router();
 const { con } = require("../con");
 
+router.get("/", function (req, res, next) {
+    const username = req.query.username;
+    res.send(`Username is: ${username}`);
+});
+
 router.post("/", function (req, res, next) {
   let name = req.body.name;
   let email = req.body.email;
