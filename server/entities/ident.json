@@ -1,0 +1,4 @@
+{
+  "username": "VARCHAR(50) PRIMARY KEY",
+  "password": "INT"
+}
