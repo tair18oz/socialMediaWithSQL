@@ -17,7 +17,7 @@ router.post("/", function (req, res, next) {
         return;
       }
       if (result.length > 0) {
-        res.send({ message: "Login successful!", username: req.body.name });
+        res.status(200).send({ message: "Login successful!", username: req.body.name });
       } else {
         res.status(401).send("Wrong username or password");
       }
