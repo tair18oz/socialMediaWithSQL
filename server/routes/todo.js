@@ -1,11 +1,9 @@
-// todos.js
 var express = require("express");
 var router = express.Router();
 const { con } = require("../con");
 const util = require("util");
 const query = util.promisify(con.query).bind(con);
 
-// Helper to run SQL queries with parameters
 const executeQuery = async (sql) => {
     try {
         const result = await query(sql);
