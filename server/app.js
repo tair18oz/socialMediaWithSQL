@@ -29,30 +29,30 @@ app.use("/login", loginRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404));
+    next(createError(404));
 });
 
 app.use(function (err, req, res, next) {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+    res.locals.message = err.message;
+    res.locals.error = req.app.get("env") === "development" ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
+    // render the error page
+    res.status(err.status || 500);
+    res.render("error");
 });
 
 var mysql = require("mysql");
 
 var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "z10mz10m",
-  database: "project7",
+    host: "localhost",
+    user: "root",
+    password: "z10mz10m",
+    database: "project7",
 });
 
 con.connect(function (err) {
-  if (err) throw err;
-  console.log("Connected!");
+    if (err) throw err;
+    console.log("Connected!");
 });
 
 module.exports = app;
