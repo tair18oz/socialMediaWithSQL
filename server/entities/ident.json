@@ -1,5 +1,4 @@
 {
   "username": "VARCHAR(50) PRIMARY KEY",
-  "password": "INT",
-  "foreign_key":"FOREIGN KEY (user_id) REFERENCES users(id)"
+  "password": "INT"
 }
