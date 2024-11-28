@@ -34,7 +34,7 @@ export default function Register() {
           console.log("User created:");
           localStorage.setItem("currentUser", userName);
           setConnectedUserName(userName);
-          Nav("/info");
+          Nav(`/${data.username}/info`);
         })
         .catch((error) => {
           setError(error.message);
