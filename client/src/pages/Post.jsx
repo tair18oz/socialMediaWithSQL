@@ -8,7 +8,10 @@ export default function Post() {
     const [newTitle, setNewTitle] = useState("");
     const [newContent, setNewContent] = useState("");
     const [postId, setPostId] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
     const { connectedUserName } = useContext(UserContext);
+
+    const apiUrl = "http://localhost:3000";
 
     useEffect(() => {
         fetchPosts();
@@ -16,12 +19,26 @@ export default function Post() {
 
     const fetchPosts = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/post/${connectedUserName}`);
+            const response = await fetch(`${apiUrl}/post/${connectedUserName}`);
             if (!response.ok) throw new Error("Failed to fetch posts");
             const data = await response.json();
             setPosts(data);
         } catch (err) {
             console.error("Error fetching posts:", err);
+        }
+    };
+    const handleSearch = async () => {
+        if (!searchQuery.trim()) {
+            fetchPosts();
+            return;
+        }
+
+        try {
+            const response = await fetch(`${apiUrl}/post/search?query=${searchQuery}`);
+            const data = await response.json();
+            setPosts(data);
+        } catch (err) {
+            console.error("Error searching posts:", err);
         }
     };
 
@@ -35,7 +52,7 @@ export default function Post() {
 
         const postData = { title, content };
         try {
-            const response = await fetch(`http://localhost:3000/post/${connectedUserName}`, {
+            const response = await fetch(`${apiUrl}/post/${connectedUserName}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -44,18 +61,15 @@ export default function Post() {
             });
 
             if (!response.ok) throw new Error("Failed to create post");
-            const result = await response.json();
-            console.log("Post created:", result);
 
+            const result = await response.json();
             setTitle("");
             setContent("");
-
-            setPosts((prevPosts) => [...prevPosts, { id: result.postId, ...postData }]);
+            fetchPosts();
         } catch (err) {
             console.error("Error creating post:", err);
         }
     };
-
     const handleUpdatePost = async (e) => {
         e.preventDefault();
 
@@ -66,7 +80,7 @@ export default function Post() {
 
         const postData = { title: newTitle, content: newContent };
         try {
-            const response = await fetch(`http://localhost:3000/post/${connectedUserName}/${postId}`, {
+            const response = await fetch(`${apiUrl}/post/${connectedUserName}/${postId}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -85,10 +99,9 @@ export default function Post() {
             console.error("Error updating post:", err);
         }
     };
-
     const handleDeletePost = async (id) => {
         try {
-            const response = await fetch(`http://localhost:3000/post/${connectedUserName}/${id}`, {
+            const response = await fetch(`${apiUrl}/post/${connectedUserName}/${id}`, {
                 method: "DELETE",
             });
 
@@ -111,6 +124,12 @@ export default function Post() {
                 <br />
                 <button type="submit">Create Post</button>
             </form>
+
+            <div>
+                <h2>Search Posts</h2>
+                <input type="text" placeholder="Search by title or content" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                <button onClick={handleSearch}>Search</button>
+            </div>
 
             {postId && (
                 <form onSubmit={handleUpdatePost}>
