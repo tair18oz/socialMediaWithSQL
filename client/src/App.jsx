@@ -13,7 +13,6 @@ function App() {
 
     return (
         <Router>
-            {/* <Register /> */}
             <div>
                 {!connectedUserName ? (
                     <>
