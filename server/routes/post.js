@@ -42,7 +42,6 @@ router.post("/:userName", async function (req, res) {
     }
 });
 
-// GET request to get all posts
 router.get("/", async function (req, res) {
     const sql = `SELECT * FROM post`;
     try {
@@ -53,7 +52,6 @@ router.get("/", async function (req, res) {
     }
 });
 
-// GET request to get posts by userName
 router.get("/:userName", async function (req, res) {
     const { userName } = req.params;
     const sql = `SELECT * FROM post WHERE user_id = (SELECT id FROM user WHERE username = '${userName}')`;
@@ -67,12 +65,10 @@ router.get("/:userName", async function (req, res) {
     }
 });
 
-// PATCH request to update a post by userName and post id
 router.patch("/:userName/:id", async function (req, res) {
     const { userName, id } = req.params;
     const { title, content } = req.body;
 
-    // SQL query to update the post
     const sql = `
         UPDATE post 
         SET title = '${title}', content = '${content}' 
@@ -92,13 +88,11 @@ router.patch("/:userName/:id", async function (req, res) {
     }
 });
 
-// DELETE request to delete a post by userName and post id
 router.delete("/:userName/:id", async function (req, res) {
     const { userName, id } = req.params;
 
     console.log("id: ", id);
     console.log("userName: ", userName);
-    // SQL query to delete the post
     const sql = `
         DELETE FROM post 
         WHERE id = ${id} 
@@ -114,6 +108,24 @@ router.delete("/:userName/:id", async function (req, res) {
         }
     } catch (err) {
         res.status(500).send("Failed to delete post.");
+    }
+});
+
+router.get("/search", async function (req, res) {
+    const { query } = req.query;
+    if (!query) {
+        return res.status(400).send("Please provide a search query.");
+    }
+    const sql = `
+        SELECT * FROM post
+        WHERE title LIKE '%${query}%' OR content LIKE '%${query}%'
+    `;
+    try {
+        const posts = await executeQuery(sql);
+        res.status(200).json(posts);
+    } catch (err) {
+        console.error("Error fetching posts:", err);
+        res.status(500).send("Failed to fetch posts.");
     }
 });
 
