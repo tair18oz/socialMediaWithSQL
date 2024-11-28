@@ -27,20 +27,20 @@ export default function Post() {
             console.error("Error fetching posts:", err);
         }
     };
-    // const handleSearch = async () => {
-    //     if (!searchQuery.trim()) {
-    //         fetchPosts();
-    //         return;
-    //     }
+    const handleSearch = async () => {
+        if (!searchQuery.trim()) {
+            fetchPosts();
+            return;
+        }
 
-    //     try {
-    //         const response = await fetch(`${apiUrl}/post/search?query=${searchQuery}`);
-    //         const data = await response.json();
-    //         setPosts(data);
-    //     } catch (err) {
-    //         console.error("Error searching posts:", err);
-    //     }
-    // };
+        try {
+            const response = await fetch(`${apiUrl}/post/${connectedUserName}/search?query=${searchQuery}`);
+            const data = await response.json();
+            setPosts(data);
+        } catch (err) {
+            console.error("Error searching posts:", err);
+        }
+    };
 
     const handleCreatePost = async (e) => {
         e.preventDefault();
@@ -125,11 +125,11 @@ export default function Post() {
                 <button type="submit">Create Post</button>
             </form>
 
-            {/* <div>
+            <div>
                 <h2>Search Posts</h2>
                 <input type="text" placeholder="Search by title or content" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                 <button onClick={handleSearch}>Search</button>
-            </div> */}
+            </div>
 
             {postId && (
                 <form onSubmit={handleUpdatePost}>

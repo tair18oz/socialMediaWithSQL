@@ -16,8 +16,7 @@ const executeQuery = async (sql) => {
 
 router.post("/:userName", async function (req, res) {
     const { userName } = req.params;
-    console.log("userName: ", userName);
-    console.log("req.body: ", req.body);
+
     const { title, content } = req.body;
 
     if (!title || !content) {
@@ -52,19 +51,6 @@ router.get("/", async function (req, res) {
     }
 });
 
-router.get("/:userName", async function (req, res) {
-    const { userName } = req.params;
-    const sql = `SELECT * FROM post WHERE user_id = (SELECT id FROM user WHERE username = '${userName}')`;
-
-    try {
-        const posts = await executeQuery(sql);
-        console.log("posts: ", posts);
-        res.status(200).json(posts);
-    } catch (err) {
-        res.status(500).send("Failed to fetch posts.");
-    }
-});
-
 router.patch("/:userName/:id", async function (req, res) {
     const { userName, id } = req.params;
     const { title, content } = req.body;
@@ -78,7 +64,6 @@ router.patch("/:userName/:id", async function (req, res) {
     try {
         const result = await executeQuery(sql);
         if (result.affectedRows > 0) {
-            console.log("result: ", result);
             res.status(200).send("Post updated successfully.");
         } else {
             res.status(404).send("Post not found or unauthorized.");
@@ -91,8 +76,6 @@ router.patch("/:userName/:id", async function (req, res) {
 router.delete("/:userName/:id", async function (req, res) {
     const { userName, id } = req.params;
 
-    console.log("id: ", id);
-    console.log("userName: ", userName);
     const sql = `
         DELETE FROM post 
         WHERE id = ${id} 
@@ -111,8 +94,9 @@ router.delete("/:userName/:id", async function (req, res) {
     }
 });
 
-router.get("/search", async function (req, res) {
+router.get("/:userName/search", async function (req, res) {
     const { query } = req.query;
+    console.log("query: ", query);
     if (!query) {
         return res.status(400).send("Please provide a search query.");
     }
@@ -122,9 +106,22 @@ router.get("/search", async function (req, res) {
     `;
     try {
         const posts = await executeQuery(sql);
+        console.log("posts: ", posts);
         res.status(200).json(posts);
     } catch (err) {
         console.error("Error fetching posts:", err);
+        res.status(500).send("Failed to fetch posts.");
+    }
+});
+
+router.get("/:userName", async function (req, res) {
+    const { userName } = req.params;
+    const sql = `SELECT * FROM post WHERE user_id = (SELECT id FROM user WHERE username = '${userName}')`;
+
+    try {
+        const posts = await executeQuery(sql);
+        res.status(200).json(posts);
+    } catch (err) {
         res.status(500).send("Failed to fetch posts.");
     }
 });
