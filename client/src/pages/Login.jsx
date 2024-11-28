@@ -36,7 +36,7 @@ export default function Login() {
       .then((data) => {
         localStorage.setItem("user", JSON.stringify(data.username));
         setConnectedUserName(data.username);
-        Nav("/info");
+        Nav(`/${data.username}/info`);
       })
       .catch((error) => {
         if (error.message.includes("401")) {

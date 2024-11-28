@@ -27,7 +27,7 @@ function App() {
                 ) : (
                     <>
                         <Routes>
-                            <Route path="/" element={<Layout />}>
+                            <Route path=":user" element={<Layout />}>
                                 <Route path="info" element={<Info />} />
                                 <Route path="todos" element={<Todo />} />
                                 <Route path="posts" element={<Post />} />
