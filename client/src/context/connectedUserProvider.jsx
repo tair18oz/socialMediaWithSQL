@@ -1,11 +1,14 @@
 import React, { createContext, useState } from "react";
 
-// Create the context
 export const UserContext = createContext();
 
-// Define the provider
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  function startUser() {
+    if (localStorage.getItem("user") !== "null") {
+      return JSON.parse(localStorage.getItem("user"));
+    } else return "";
+  }
+  const [user, setUser] = useState(startUser);
 
   const setConnectedUserName = (user) => {
     setUser(user);
