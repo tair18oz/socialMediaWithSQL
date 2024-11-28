@@ -4,7 +4,6 @@ const { con } = require("../con");
 const util = require("util");
 const query = util.promisify(con.query).bind(con);
 
-// Function to execute SQL queries with error handling
 const executeQuery = async (sql) => {
     try {
         const result = await query(sql);
@@ -15,33 +14,27 @@ const executeQuery = async (sql) => {
     }
 };
 
-// POST request to add a new post (with userName as URL parameter)
 router.post("/:userName/post", async function (req, res) {
-    const { userName } = req.params; // Extracting userName from the URL parameter
+    const { userName } = req.params;
     console.log("userName: ", userName);
-    const { user_id, title, content } = req.body; // Extracting title and content from the body
+    const { user_id, title, content } = req.body;
 
-    // Make sure that title and content are provided
     if (!user_id || !title || !content) {
         return res.status(400).json({ error: "Title and content are required." });
     }
 
-    // SQL query to insert the new post
     const sql = `
         INSERT INTO post (user_id, title, content) 
         VALUES (
-            (SELECT id FROM user WHERE username = '${userName}'), 
+            (SELECT id FROM user WHERE username = '${userName}'),
+            '${user_id}', 
             '${title}', 
             '${content}'
-            '${user_id}'
         )
     `;
 
     try {
-        // Execute the query
         const result = await executeQuery(sql);
-
-        // Respond with the created post ID
         res.status(201).json({ postId: result.insertId });
     } catch (err) {
         console.error("Error inserting post:", err);
@@ -60,13 +53,14 @@ router.get("/", async function (req, res) {
     }
 });
 
-// GET request to get post by userName
-router.get("/:userName", async function (req, res) {
+// GET request to get posts by userName
+router.get("/:userName/post", async function (req, res) {
     const { userName } = req.params;
     const sql = `SELECT * FROM post WHERE user_id = (SELECT id FROM user WHERE username = '${userName}')`;
 
     try {
         const posts = await executeQuery(sql);
+        console.log("posts: ", posts);
         res.status(200).json(posts);
     } catch (err) {
         res.status(500).send("Failed to fetch posts.");
@@ -88,6 +82,7 @@ router.patch("/:userName/:id", async function (req, res) {
     try {
         const result = await executeQuery(sql);
         if (result.affectedRows > 0) {
+            console.log("result: ", result);
             res.status(200).send("Post updated successfully.");
         } else {
             res.status(404).send("Post not found or unauthorized.");
@@ -101,6 +96,8 @@ router.patch("/:userName/:id", async function (req, res) {
 router.delete("/:userName/:id", async function (req, res) {
     const { userName, id } = req.params;
 
+    console.log("id: ", id);
+    console.log("userName: ", userName);
     // SQL query to delete the post
     const sql = `
         DELETE FROM post 
