@@ -10,36 +10,36 @@ import Post from "./pages/Post";
 import Layout from "./Layout";
 
 function App() {
-  const { connectedUserName } = useContext(UserContext);
+    const { connectedUserName } = useContext(UserContext);
 
-  return (
-    <Router>
-      {/* <AppProvider> */}
-      {/* <Register /> */}
-      <div>
-        {!connectedUserName ? (
-          <>
-            <Routes>
-              <Route path="*" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-            </Routes>
-          </>
-        ) : (
-          <>
-            <Routes>
-              <Route path=":user" element={<Layout />}>
-                <Route path="info" element={<Info />} />
-                <Route path="todos" element={<Todo />} />
-                <Route path="posts" element={<Post />} />
-                <Route path="*" element={<Info />} />
-              </Route>
-            </Routes>
-          </>
-        )}
-      </div>
-      {/* </AppProvider> */}
-    </Router>
-  );
+    return (
+        <Router>
+            {/* <AppProvider> */}
+            {/* <Register /> */}
+            <div>
+                {!connectedUserName ? (
+                    <>
+                        <Routes>
+                            <Route path="*" element={<Login />} />
+                            <Route path="/register" element={<Register />} />
+                        </Routes>
+                    </>
+                ) : (
+                    <>
+                        <Routes>
+                            <Route path=":user" element={<Layout />}>
+                                <Route path="info" element={<Info />} />
+                                <Route path="todos" element={<Todo />} />
+                                <Route path="posts" element={<Post />} />
+                                <Route path="*" element={<Info />} />
+                            </Route>
+                        </Routes>
+                    </>
+                )}
+            </div>
+            {/* </AppProvider> */}
+        </Router>
+    );
 }
 
 export default App;

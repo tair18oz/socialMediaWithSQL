@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../context/connectedUserProvider";
 
 export default function Post() {
     const [posts, setPosts] = useState([]);
@@ -8,13 +9,13 @@ export default function Post() {
     const [newTitle, setNewTitle] = useState("");
     const [newContent, setNewContent] = useState("");
     const [postId, setPostId] = useState("");
-
+    const { connectedUserName } = useContext(UserContext);
     const apiUrl = "http://localhost:3000";
 
     useEffect(() => {
         async function fetchPosts() {
             try {
-                const response = await fetch(`${apiUrl}/posts`);
+                const response = await fetch(`${apiUrl}/${connectedUserName}`);
                 const data = await response.json();
                 setPosts(data);
             } catch (err) {
@@ -25,9 +26,9 @@ export default function Post() {
         fetchPosts();
     }, []);
 
-    const getPostsByUserName = async (userName) => {
+    const getPostsByUserName = async (connectedUserName) => {
         try {
-            const response = await fetch(`${apiUrl}/posts/${userName}`);
+            const response = await fetch(`${apiUrl}/${connectedUserName}`);
             const data = await response.json();
             setPosts(data);
         } catch (err) {
@@ -45,7 +46,7 @@ export default function Post() {
         };
 
         try {
-            const response = await fetch(`${apiUrl}/posts/${userName}`, {
+            const response = await fetch(`${apiUrl}/${connectedUserName}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -70,7 +71,7 @@ export default function Post() {
         };
 
         try {
-            const response = await fetch(`${apiUrl}/posts/${userName}/${postId}`, {
+            const response = await fetch(`${apiUrl}/${connectedUserName}/${postId}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -88,7 +89,7 @@ export default function Post() {
 
     const handleDeletePost = async (postId) => {
         try {
-            const response = await fetch(`${apiUrl}/posts/${userName}/${postId}`, {
+            const response = await fetch(`${apiUrl}/${connectedUserName}/${postId}`, {
                 method: "DELETE",
             });
 
