@@ -12,6 +12,7 @@ export default function Register() {
     const Nav = useNavigate();
     const { setConnectedUserName } = useContext(UserContext);
 
+    // Function to add the user after successful registration
     const handleSubmit = (e) => {
         e.preventDefault();
         const API_URL_USERS = "http://localhost:3000/register";
@@ -33,7 +34,7 @@ export default function Register() {
                     console.log("User created:");
                     localStorage.setItem("currentUser", userName);
                     setConnectedUserName(userName);
-                    Nav("/info");
+                    Nav(`/${data.username}/info`);
                 })
                 .catch((error) => {
                     setError(error.message);

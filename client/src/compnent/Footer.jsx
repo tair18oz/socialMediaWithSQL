@@ -1,16 +1,19 @@
 import React, { useContext } from "react";
 import { UserContext } from "../context/connectedUserProvider";
+import { useNavigate } from "react-router";
 
 function Footer() {
-  const { setConnectedUserName } = useContext(UserContext);
+  const { logout } = useContext(UserContext);
+  const navigate = useNavigate();
 
-  const logout = () => {
-    setConnectedUserName(false);
-    localStorage.clear();
+  const logOutUser = () => {
+    logout();
+    navigate("/");
   };
+
   return (
     <div id="Footer">
-      <button id="FooterButton" onClick={logout}>
+      <button id="FooterButton" onClick={logOutUser}>
         log-out
       </button>
     </div>
