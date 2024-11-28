@@ -3,18 +3,28 @@ import { UserContext } from "../context/connectedUserProvider";
 
 export default function Info() {
   const [userData, setUserData] = useState({});
-  const myusermane = JSON.parse(localStorage.getItem("user"));
-  useEffect(() => {
-    fetch(`http://localhost:3000/${myusermane}/info`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setUserData(data);
-      })
-      .catch((error) => console.error("error", error));
-  }, [myusermane]);
-
+  // const myusermane = JSON.parse(localStorage.getItem("user"))
   const { connectedUserName } = useContext(UserContext);
+
+  function getInfo() {
+    console.log("went to fetch some info");
+    fetch(`http://localhost:3000/info/?user=${connectedUserName}`)
+      .then((response) => {
+        if (response.status !== 200) {
+          console.log("something went wrong");
+          return;
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setUserData(data);
+      });
+  }
+
+  useEffect(() => {
+    getInfo();
+  }, [connectedUserName]);
+
   return (
     <>
       <h1>Info for {connectedUserName}</h1>

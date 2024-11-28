@@ -7,11 +7,11 @@ const cors = require("cors");
 var bodyParser = require("body-parser");
 
 var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+var infoRouter = require("./routes/info");
 var registerRouter = require("./routes/register");
 var loginRouter = require("./routes/login");
-var postRouter = require("./routes/post"); // Ensure the path is correct
-var todoRouter = require("./routes/todo"); // Ensure the path is correct
+var postRouter = require("./routes/post");
+var todoRouter = require("./routes/todo");
 
 var app = express();
 var fsPromise = require("fs/promises");
@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 
 // Routes setup
 app.use("/", indexRouter);
-app.use("/user", usersRouter);
+app.use("/info", infoRouter);
 app.use("/register", registerRouter);
 app.use("/login", loginRouter);
 app.use("/post", postRouter);
@@ -38,29 +38,29 @@ app.use("/todo", todoRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    next(createError(404));
+  next(createError(404));
 });
 
 // Error handler
 app.use(function (err, req, res, next) {
-    res.locals.message = err.message;
-    res.locals.error = req.app.get("env") === "development" ? err : {};
-    res.status(err.status || 500);
-    res.render("error");
+  res.locals.message = err.message;
+  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.status(err.status || 500);
+  res.render("error");
 });
 
 var mysql = require("mysql");
 
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "z10mz10m",
-    database: "project7",
+  host: "localhost",
+  user: "root",
+  password: "z10mz10m",
+  database: "project7",
 });
 
 con.connect(function (err) {
-    if (err) throw err;
-    console.log("Connected!");
+  if (err) throw err;
+  console.log("Connected!");
 });
 
 module.exports = app;

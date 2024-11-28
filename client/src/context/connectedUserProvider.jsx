@@ -10,6 +10,7 @@ export const UserProvider = ({ children }) => {
     } else return "";
   }
   const [user, setUser] = useState(startUser);
+  console.log("user: ", user);
 
   const setConnectedUserName = (user) => {
     if (!user) return;

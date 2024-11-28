@@ -2,7 +2,6 @@ var express = require("express");
 var router = express.Router();
 const { con } = require("../con");
 
-// POST request to check if username exists
 router.get("/", function (req, res, next) {
   console.log("req.query: ", req.query);
   const username = req.query.username; // Get username from the request body

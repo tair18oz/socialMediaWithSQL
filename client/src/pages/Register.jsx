@@ -15,6 +15,11 @@ export default function Register() {
   // Function to add the user after successful registration
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (password !== verifyPassword) {
+      setError("Passwords do not match!");
+      return;
+    }
+
     const API_URL_USERS = "http://localhost:3000/register";
     if (uniqueName) {
       fetch(API_URL_USERS, {
@@ -47,11 +52,6 @@ export default function Register() {
   // Handle form submission
   const handleUsername = (e) => {
     e.preventDefault();
-
-    if (password !== verifyPassword) {
-      setError("Passwords do not match!");
-      return;
-    }
 
     // Check if the username is available
     fetch(`http://localhost:3000/register/?username=${userName}`)
