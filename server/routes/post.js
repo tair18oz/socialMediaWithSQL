@@ -14,7 +14,7 @@ const executeQuery = async (sql) => {
     }
 };
 
-router.post("/:userName/post", async function (req, res) {
+router.post("/:userName", async function (req, res) {
     const { userName } = req.params;
     console.log("userName: ", userName);
     const { user_id, title, content } = req.body;
@@ -54,7 +54,7 @@ router.get("/", async function (req, res) {
 });
 
 // GET request to get posts by userName
-router.get("/:userName/post", async function (req, res) {
+router.get("/:userName", async function (req, res) {
     const { userName } = req.params;
     const sql = `SELECT * FROM post WHERE user_id = (SELECT id FROM user WHERE username = '${userName}')`;
 
