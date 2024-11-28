@@ -7,8 +7,8 @@ export default function Header() {
             <div id="Header">
                 <div id="user-logout"></div>
                 <nav className="font">
-                    <NavLink to="info">info</NavLink>
-                    <NavLink to="posts">posts</NavLink>
+                    <NavLink to="info">info &nbsp;</NavLink>
+                    <NavLink to="posts">posts &nbsp;</NavLink>
                     <NavLink to="todos">todos</NavLink>
                 </nav>
             </div>
