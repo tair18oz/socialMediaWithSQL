@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Navigate, NavLink, useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function Login({ setConnectedUserName }) {
   const Nav = useNavigate();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +33,7 @@ export default function Login() {
       })
       .then((data) => {
         localStorage.setItem("user", JSON.stringify(data.username));
-        // update general state
+        setConnectedUserName(JSON.stringify(data.username));
         // Redirect to home page
       })
       .catch((error) => {
