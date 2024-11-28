@@ -14,8 +14,6 @@ function App() {
 
     return (
         <Router>
-            {/* <AppProvider> */}
-            {/* <Register /> */}
             <div>
                 {!connectedUserName ? (
                     <>
@@ -37,7 +35,6 @@ function App() {
                     </>
                 )}
             </div>
-            {/* </AppProvider> */}
         </Router>
     );
 }
