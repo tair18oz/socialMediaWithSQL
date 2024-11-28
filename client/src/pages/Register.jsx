@@ -53,9 +53,8 @@ export default function Register() {
   const handleUsername = (e) => {
     e.preventDefault();
 
-    // Check if the username is available
     fetch(`http://localhost:3000/register/?username=${userName}`)
-      .then((response) => response.json()) // Parse the JSON response
+      .then((response) => response.json())
       .then((data) => {
         if (data.body.userExist === "true") {
           alert("username is taken, please choose a different unique username");

@@ -1,4 +1,3 @@
-/* Global Styles */
 * {
   margin: 0;
   padding: 0;
@@ -7,37 +6,35 @@
 }
 
 body {
-  background-color: #f4f7fc; /* Light background */
-  color: #333; /* Dark text */
+  background-color: #f4f7fc; 
+  color: #000000;
   font-size: 16px;
   line-height: 1.5;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  padding: 20px;
+  padding: 0;
 }
 
 .container {
   width: 100%;
   max-width: 480px;
-  background: #ffffff; /* White container */
+  background: #ffffff; 
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow-y: auto;
 }
 
-/* On hover, slightly lift the container */
 .container:hover {
   transform: translateY(-5px);
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
 }
 
-/* Header */
 h1, h2, h3 {
-  color: #1a1a1a; /* Darker text for headers */
+  color: #000000;
   font-weight: bold;
   margin-bottom: 15px;
   font-size: 1.75rem;
@@ -46,20 +43,19 @@ h1, h2, h3 {
 h1 {
   font-size: 2.5rem;
   margin-bottom: 20px;
-  color: #007bff; /* Blue for main heading */
+  color: #000000; 
 }
 
 h2 {
   font-size: 2rem;
-  color: #0056b3; /* Darker blue for subheading */
+  color: #000000; 
 }
 
 h3 {
   font-size: 1.25rem;
-  color: #333; /* Slightly darker text for subheadings */
+  color: #000000; 
 }
 
-/* Form Styling */
 form {
   display: flex;
   flex-direction: column;
@@ -76,20 +72,21 @@ textarea {
   border: 2px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
-  background-color: #f7f9fc; /* Light grey background */
+  background-color: #f7f9fc; 
   transition: border-color 0.3s ease;
+  color:#000000
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
 textarea:focus {
-  border-color: #007bff; /* Blue focus border */
+  border-color: #007bff; 
   outline: none;
 }
 
 button {
-  background-color: #007bff; /* Blue button */
+  background-color: #007bff; 
   color: white;
   padding: 12px 20px;
   border: none;
@@ -100,13 +97,12 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: #0056b3; 
   transform: translateY(-2px);
 }
 
-/* Links */
 a {
-  color: #007bff; /* Soft blue links */
+  color: #007bff; 
   text-decoration: none;
   font-size: 1rem;
   margin-top: 10px;
@@ -115,24 +111,22 @@ a {
 
 a:hover {
   text-decoration: underline;
-  color: #0056b3; /* Darker blue on hover */
+  color: #0056b3; 
 }
 
-/* Error Message */
 .error {
   color: red;
   font-size: 0.875rem;
   margin-top: 10px;
 }
 
-/* Posts Section */
 ul {
   list-style: none;
   padding: 0;
 }
 
 ul li {
-  background-color: #ffffff; /* White post background */
+  background-color: #ffffff; 
   margin: 15px 0;
   padding: 20px;
   border-radius: 12px;
@@ -146,10 +140,10 @@ ul li:hover {
 }
 
 ul li button {
-  background-color: #dc3545; /* Red button for delete */
+  background-color: #dc3545; 
   padding: 8px 15px;
   border-radius: 6px;
-  color: white;
+  color: rgb(0, 0, 0);
   border: none;
   cursor: pointer;
   font-size: 1rem;
@@ -157,11 +151,10 @@ ul li button {
 }
 
 ul li button:hover {
-  background-color: #c82333; /* Darker red on hover */
+  background-color: #c82333; 
   transform: translateY(-2px);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   body {
     padding: 10px;
@@ -196,3 +189,4 @@ ul li button:hover {
     font-size: 0.9rem;
   }
 }
+

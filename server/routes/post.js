@@ -17,9 +17,10 @@ const executeQuery = async (sql) => {
 router.post("/:userName", async function (req, res) {
     const { userName } = req.params;
     console.log("userName: ", userName);
-    const { user_id, title, content } = req.body;
+    console.log("req.body: ", req.body);
+    const { title, content } = req.body;
 
-    if (!user_id || !title || !content) {
+    if (!title || !content) {
         return res.status(400).json({ error: "Title and content are required." });
     }
 
@@ -27,7 +28,6 @@ router.post("/:userName", async function (req, res) {
         INSERT INTO post (user_id, title, content) 
         VALUES (
             (SELECT id FROM user WHERE username = '${userName}'),
-            '${user_id}', 
             '${title}', 
             '${content}'
         )
