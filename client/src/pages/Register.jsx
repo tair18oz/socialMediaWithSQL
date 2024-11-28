@@ -1,13 +1,16 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/connectedUserProvider";
 
-export default function Register({ setConnectedUserName }) {
+export default function Register() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
   const [error, setError] = useState("");
   const [uniqueName, setUniqueName] = useState(false);
+  const Nav = useNavigate();
+  const { setConnectedUserName } = useContext(UserContext);
 
   // Function to add the user after successful registration
   const handleSubmit = (e) => {
@@ -31,6 +34,7 @@ export default function Register({ setConnectedUserName }) {
           console.log("User created:");
           localStorage.setItem("currentUser", userName);
           setConnectedUserName(userName);
+          Nav("/info");
         })
         .catch((error) => {
           setError(error.message);

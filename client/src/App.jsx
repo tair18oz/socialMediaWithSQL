@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, NavLink } from "react-router-dom";
+import { UserContext, UserProvider } from "./context/connectedUserProvider";
 import "./App.css";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -9,37 +10,36 @@ import Post from "./pages/Post";
 import Layout from "./Layout";
 
 function App() {
-    const [connectedUserName, setConnectedUserName] = useState("");
+  const { connectedUserName } = useContext(UserContext);
 
-    return (
-        <Router>
-            {/* <Register /> */}
-            <div>
-                {!connectedUserName ? (
-                    <>
-                        <Routes>
-                            <Route path="*" element={<Login connectedUserName={connectedUserName} setConnectedUserName={setConnectedUserName} />} />
-                            <Route
-                                path="/register"
-                                element={<Register connectedUserName={connectedUserName} setConnectedUserName={setConnectedUserName} />}
-                            />
-                        </Routes>
-                    </>
-                ) : (
-                    <>
-                        <Routes>
-                            <Route path="/" element={<Layout connectedUserName={connectedUserName} setConnectedUserName={setConnectedUserName} />}>
-                                <Route path="info" element={<Info />} />
-                                <Route path="todos" element={<Todo />} />
-                                <Route path="posts" element={<Post />} />
-                                <Route path="*" element={<Info />} />
-                            </Route>
-                        </Routes>
-                    </>
-                )}
-            </div>
-        </Router>
-    );
+  return (
+    <Router>
+      {/* <AppProvider> */}
+      {/* <Register /> */}
+      <div>
+        {!connectedUserName ? (
+          <>
+            <Routes>
+              <Route path="*" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Routes>
+          </>
+        ) : (
+          <>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route path="info" element={<Info />} />
+                <Route path="todos" element={<Todo />} />
+                <Route path="posts" element={<Post />} />
+                <Route path="*" element={<Info />} />
+              </Route>
+            </Routes>
+          </>
+        )}
+      </div>
+      {/* </AppProvider> */}
+    </Router>
+  );
 }
 
 export default App;

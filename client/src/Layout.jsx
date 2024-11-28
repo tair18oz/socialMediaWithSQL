@@ -4,11 +4,11 @@ import Header from "./compnent/Header";
 import { Outlet } from "react-router-dom";
 
 export default function Layout({ connectedUserName, setConnectedUserName }) {
-    return (
-        <>
-            <Outlet />
-            <Header connectedUserName={connectedUserName} setConnectedUserName={setConnectedUserName} id="Header" />
-            <Footer connectedUserName={connectedUserName} setConnectedUserName={setConnectedUserName} id="Footer" />
-        </>
-    );
+  return (
+    <>
+      <Outlet connectedUserName={connectedUserName} />
+      <Header connectedUserName={connectedUserName} setConnectedUserName={setConnectedUserName} id="Header" />
+      <Footer connectedUserName={connectedUserName} setConnectedUserName={setConnectedUserName} id="Footer" />
+    </>
+  );
 }

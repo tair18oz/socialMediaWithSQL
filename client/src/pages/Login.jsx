@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Navigate, NavLink, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/connectedUserProvider";
 
-export default function Login({ setConnectedUserName }) {
+export default function Login() {
   const Nav = useNavigate();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { setConnectedUserName } = useContext(UserContext);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -33,8 +35,8 @@ export default function Login({ setConnectedUserName }) {
       })
       .then((data) => {
         localStorage.setItem("user", JSON.stringify(data.username));
-        setConnectedUserName(JSON.stringify(data.username));
-        // Redirect to home page
+        setConnectedUserName(data.username);
+        Nav("/info");
       })
       .catch((error) => {
         if (error.message.includes("401")) {
